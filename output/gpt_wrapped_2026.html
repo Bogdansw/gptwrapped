@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GPT Wrapped - 2026</title>
+    <style>
+
+:root {
+    --bg: #141414;
+    --bg-surface: #1c1c1c;
+    --bg-surface-2: #222222;
+    --border: #333333;
+    --text: #dcdcdc;
+    --text-secondary: #a8a8a8;
+    --text-muted: #808080;
+    --accent: #4f8fd0;
+    --accent-soft: #6f9fcb;
+    --green: #8fbf8f;
+    --red: #c96f6f;
+    --amber: #cfa65a;
+    --radius: 4px;
+    --font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--bg);
+    color: var(--text);
+    font-family: var(--font-family);
+    line-height: 1.6;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Header */
+.top-nav {
+    width: 100%;
+    max-width: 1000px;
+    padding: 1rem 1.5rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    background: var(--bg);
+    z-index: 100;
+}
+
+.brand-badge {
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text);
+}
+
+.mode-toggle-group {
+    display: flex;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+}
+
+.mode-btn {
+    background: none;
+    border: none;
+    color: var(--text-secondary);
+    padding: 0.4rem 0.9rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    cursor: pointer;
+    border-radius: 0;
+}
+
+.mode-btn + .mode-btn {
+    border-left: 1px solid var(--border);
+}
+
+.mode-btn.active {
+    background: var(--bg-surface-2);
+    color: #ffffff;
+}
+
+/* Container */
+.main-container {
+    width: 100%;
+    max-width: 1000px;
+    padding: 2rem 1.5rem 4rem 1.5rem;
+}
+
+/* Story Controls */
+.story-controls {
+    display: none;
+    width: 100%;
+    max-width: 760px;
+    margin: 0 auto 1.5rem auto;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.story-progress-bar {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+}
+
+.story-progress-segment {
+    flex: 1;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.12);
+    overflow: hidden;
+}
+
+.story-progress-fill {
+    width: 0%;
+    height: 100%;
+    background: #ffffff;
+    transition: width 0.3s ease;
+}
+
+.story-progress-segment.passed .story-progress-fill {
+    width: 100%;
+}
+
+.story-nav-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.story-nav-btn {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.45rem 1rem;
+    border-radius: var(--radius);
+    cursor: pointer;
+    font-weight: 500;
+    font-size: 0.9rem;
+    font-family: inherit;
+}
+
+.story-nav-btn:hover {
+    background: var(--bg-surface-2);
+}
+
+.story-slide-counter {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Section Layout */
+.wrapped-section {
+    margin-bottom: 3rem;
+    scroll-margin-top: 5rem;
+}
+
+.section-header {
+    margin-bottom: 1.2rem;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 0.6rem;
+}
+
+.section-title {
+    font-size: 1.5rem;
+    font-weight: 700;
+    line-height: 1.3;
+}
+
+.section-subtitle {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    margin-top: 0.2rem;
+}
+
+/* Hero */
+.hero-banner {
+    text-align: left;
+    padding: 2.5rem 2rem;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 2.5rem;
+}
+
+.hero-year {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 0.6rem;
+}
+
+.hero-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+    font-weight: 800;
+    line-height: 1.15;
+    margin-bottom: 0.8rem;
+    color: #ffffff;
+}
+
+.hero-tagline {
+    font-size: 1.05rem;
+    color: var(--text-secondary);
+    max-width: 620px;
+}
+
+/* Stats Grid */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.stat-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+}
+
+.stat-big {
+    font-size: 2.2rem;
+    font-weight: 700;
+    line-height: 1.1;
+    color: #ffffff;
+    margin-bottom: 0.3rem;
+}
+
+.stat-label {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.stat-subtext {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+/* Chart Card */
+.chart-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+}
+
+.wrapped-chart-svg {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+}
+
+.chart-bar {
+    transition: opacity 0.2s;
+    cursor: pointer;
+}
+
+.chart-bar:hover {
+    opacity: 0.75;
+}
+
+/* Topic List */
+.topic-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.topic-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.topic-header {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.95rem;
+    font-weight: 600;
+}
+
+.topic-name {
+    color: var(--text);
+}
+
+.topic-stat {
+    color: var(--text-secondary);
+}
+
+.topic-pct {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+}
+
+.topic-bar-track {
+    width: 100%;
+    height: 8px;
+    background: rgba(255, 255, 255, 0.07);
+    overflow: hidden;
+}
+
+.topic-bar-fill {
+    height: 100%;
+    transition: width 0.6s ease;
+}
+
+.note-box {
+    margin-top: 1.2rem;
+    padding: 0.7rem 1rem;
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+.empty-note {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+/* Rabbit Hole Card */
+.rabbit-hole-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--red);
+    border-radius: var(--radius);
+    padding: 1.8rem;
+}
+
+.rabbit-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--red);
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.rabbit-title {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 1.4rem;
+    color: #ffffff;
+    line-height: 1.35;
+}
+
+.rabbit-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.2rem;
+}
+
+.rabbit-stat-box {
+    background: var(--bg-surface-2);
+    padding: 0.9rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+}
+
+.stat-num {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.stat-sub {
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.rabbit-date {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+/* Repeated Subjects */
+.revisited-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-top: 0.6rem;
+}
+
+.revisited-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    padding: 0.45rem 0.8rem;
+    border-radius: var(--radius);
+    font-size: 0.9rem;
+}
+
+.tag-word {
+    color: var(--text);
+    font-weight: 600;
+}
+
+.tag-count {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+}
+
+.word-cloud-container {
+    margin-top: 0.6rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.word-bubble {
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    color: var(--text-secondary);
+    padding: 0.35rem 0.7rem;
+    border-radius: var(--radius);
+    font-size: 0.85rem;
+}
+
+.sub-head {
+    color: var(--text-secondary);
+    font-size: 0.95rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+.sub-head.spaced {
+    margin-top: 1.6rem;
+}
+
+/* Awards */
+.awards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1rem;
+}
+
+.award-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.4rem;
+}
+
+.award-title {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 0.3rem;
+}
+
+.award-metric {
+    font-size: 1.2rem;
+    font-weight: 700;
+    color: var(--amber);
+    margin-bottom: 0.35rem;
+}
+
+.award-desc {
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.35rem;
+}
+
+.award-detail {
+    font-size: 0.78rem;
+    color: var(--text-muted);
+}
+
+/* Summary */
+.summary-card {
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 2rem;
+    max-width: 680px;
+    margin: 0 auto;
+}
+
+.summary-header {
+    font-size: 1.4rem;
+    font-weight: 700;
+    margin-bottom: 0.3rem;
+    color: #ffffff;
+}
+
+.summary-subtitle {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 1.5rem;
+}
+
+.summary-stats-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 1.2rem 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 1.5rem;
+}
+
+.summary-item-num {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.summary-item-lbl {
+    font-size: 0.72rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.summary-list {
+    margin-bottom: 1.2rem;
+}
+
+.summary-list p {
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.4rem;
+}
+
+.summary-list strong {
+    color: var(--text);
+}
+
+.summary-footer {
+    font-size: 0.82rem;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 0.9rem;
+}
+
+/* Footer */
+.page-footer {
+    width: 100%;
+    max-width: 1000px;
+    padding: 2rem 1.5rem;
+    text-align: center;
+    border-top: 1px solid var(--border);
+    font-size: 0.82rem;
+    color: var(--text-muted);
+}
+
+.footer-note {
+    color: var(--green);
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .section-title { font-size: 1.3rem; }
+    .stats-grid { grid-template-columns: 1fr 1fr; }
+    .summary-card { padding: 1.4rem 1.1rem; }
+    .top-nav { padding: 0.9rem 1rem; }
+}
+
+@media (max-width: 480px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    .summary-stats-row { flex-direction: column; gap: 1rem; }
+}
+
+    </style>
+</head>
+<body>
+
+    <header class="top-nav">
+        <div class="brand-badge">GPT Wrapped</div>
+        <div class="mode-toggle-group">
+            <button class="mode-btn active" id="btnScrollMode" onclick="setViewMode('scroll')">Full Report</button>
+            <button class="mode-btn" id="btnStoryMode" onclick="setViewMode('story')">Story Mode</button>
+        </div>
+    </header>
+
+    <main class="main-container">
+
+        <div class="story-controls" id="storyControls">
+            <div class="story-progress-bar" id="storyProgressBar"></div>
+            <div class="story-nav-buttons">
+                <button class="story-nav-btn" onclick="prevStorySlide()">Previous</button>
+                <span class="story-slide-counter" id="storySlideCounter">1 of 9</span>
+                <button class="story-nav-btn" onclick="nextStorySlide()">Next</button>
+            </div>
+        </div>
+
+        <section class="wrapped-section" id="slide-0">
+            <div class="hero-banner">
+                <div class="hero-year">2026 recap</div>
+                <h1 class="hero-title">Your GPT Wrapped</h1>
+                <p class="hero-tagline">
+                    A local recap of the questions you asked and the threads you kept open.
+                </p>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-1">
+            <div class="section-header">
+                <h2 class="section-title">The numbers</h2>
+                <p class="section-subtitle">Your ChatGPT activity for this period.</p>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-big">285</div>
+                    <div class="stat-label">Conversations</div>
+                    <div class="stat-subtext">Threads created in 2026</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-big">1,635</div>
+                    <div class="stat-label">Messages</div>
+                    <div class="stat-subtext">799 prompts and 836 answers</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-big">154</div>
+                    <div class="stat-label">Active days</div>
+                    <div class="stat-subtext">Days with at least one message</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-big">5.7</div>
+                    <div class="stat-label">Avg messages / chat</div>
+                    <div class="stat-subtext">Median: 4.0 messages</div>
+                </div>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-2">
+            <div class="section-header">
+                <h2 class="section-title">Messages by month</h2>
+                <p class="section-subtitle">Message volume across each month of 2026.</p>
+            </div>
+
+            <div class="chart-card">
+                
+    <svg viewBox="0 0 760 240" class="wrapped-chart-svg" xmlns="http://www.w3.org/2000/svg">
+        <line x1="50" y1="157.5" x2="740" y2="157.5" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4,4" /><text x="40" y="161.5" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="end" font-family="system-ui">86</text><line x1="50" y1="115.0" x2="740" y2="115.0" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4,4" /><text x="40" y="119.0" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="end" font-family="system-ui">173</text><line x1="50" y1="72.5" x2="740" y2="72.5" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4,4" /><text x="40" y="76.5" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="end" font-family="system-ui">259</text><line x1="50" y1="30.0" x2="740" y2="30.0" stroke="rgba(255,255,255,0.07)" stroke-dasharray="4,4" /><text x="40" y="34.0" fill="rgba(255,255,255,0.4)" font-size="11" text-anchor="end" font-family="system-ui">346</text>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Jan: 194 messages (36 chats)</title>
+            <rect x="62.9" y="104.7" width="31.6" height="95.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="78.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Jan</text>
+            <text x="78.8" y="96.7" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">194</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Feb: 178 messages (37 chats)</title>
+            <rect x="120.4" y="112.5" width="31.6" height="87.5" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="136.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Feb</text>
+            <text x="136.2" y="104.5" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">178</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Mar: 256 messages (47 chats)</title>
+            <rect x="177.9" y="74.2" width="31.6" height="125.8" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="193.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Mar</text>
+            <text x="193.8" y="66.2" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">256</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Apr: 346 messages (56 chats)</title>
+            <rect x="235.4" y="30.0" width="31.6" height="170.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="251.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Apr</text>
+            <text x="251.2" y="22.0" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">346</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>May: 151 messages (32 chats)</title>
+            <rect x="292.9" y="125.8" width="31.6" height="74.2" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="308.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">May</text>
+            <text x="308.8" y="117.8" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">151</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Jun: 258 messages (36 chats)</title>
+            <rect x="350.4" y="73.2" width="31.6" height="126.8" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="366.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Jun</text>
+            <text x="366.2" y="65.2" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">258</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Jul: 39 messages (8 chats)</title>
+            <rect x="407.9" y="180.8" width="31.6" height="19.2" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="423.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Jul</text>
+            <text x="423.8" y="172.8" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">39</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Aug: 141 messages (20 chats)</title>
+            <rect x="465.4" y="130.7" width="31.6" height="69.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="481.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Aug</text>
+            <text x="481.2" y="122.7" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">141</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Sep: 72 messages (13 chats)</title>
+            <rect x="522.9" y="164.6" width="31.6" height="35.4" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="538.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Sep</text>
+            <text x="538.8" y="156.6" fill="#a8a8a8" font-size="11" font-weight="600" text-anchor="middle" font-family="system-ui">72</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Oct: 0 messages (0 chats)</title>
+            <rect x="580.4" y="200.0" width="31.6" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="596.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Oct</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Nov: 0 messages (0 chats)</title>
+            <rect x="637.9" y="200.0" width="31.6" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="653.8" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Nov</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>Dec: 0 messages (0 chats)</title>
+            <rect x="695.4" y="200.0" width="31.6" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="711.2" y="228" fill="rgba(255,255,255,0.6)"
+                  font-size="12" text-anchor="middle" font-family="system-ui">Dec</text>
+            
+        </g>
+        
+    </svg>
+    
+                <div class="note-box">
+                    Busiest month: April 2026 with 346 messages.
+                </div>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-3">
+            <div class="section-header">
+                <h2 class="section-title">Top topics</h2>
+                <p class="section-subtitle">What you talked about most.</p>
+            </div>
+
+            <div class="chart-card">
+                <div class="topic-container">
+                    
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Other</span>
+                <span class="topic-stat">163 chats <span class="topic-pct">(57.2%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 57.2%; background: rgba(79, 143, 208, 1.00);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Gaming</span>
+                <span class="topic-stat">34 chats <span class="topic-pct">(11.9%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 11.9%; background: rgba(79, 143, 208, 0.90);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Programming / Web Development</span>
+                <span class="topic-stat">19 chats <span class="topic-pct">(6.7%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 6.7%; background: rgba(79, 143, 208, 0.80);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Writing</span>
+                <span class="topic-stat">16 chats <span class="topic-pct">(5.6%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 5.6%; background: rgba(79, 143, 208, 0.70);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Anime / Manga</span>
+                <span class="topic-stat">12 chats <span class="topic-pct">(4.2%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 4.2%; background: rgba(79, 143, 208, 0.60);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Technology</span>
+                <span class="topic-stat">12 chats <span class="topic-pct">(4.2%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 4.2%; background: rgba(79, 143, 208, 0.50);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">AI</span>
+                <span class="topic-stat">12 chats <span class="topic-pct">(4.2%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 4.2%; background: rgba(79, 143, 208, 0.40);"></div>
+            </div>
+        </div>
+        
+        <div class="topic-row">
+            <div class="topic-header">
+                <span class="topic-name">Entertainment</span>
+                <span class="topic-stat">9 chats <span class="topic-pct">(3.2%)</span></span>
+            </div>
+            <div class="topic-bar-track">
+                <div class="topic-bar-fill" style="width: 3.2%; background: rgba(79, 143, 208, 0.30);"></div>
+            </div>
+        </div>
+        
+                </div>
+                <div class="note-box">
+                    Approximate match on titles and your prompts. Nothing leaves your machine.
+                </div>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-4">
+            <div class="section-header">
+                <h2 class="section-title">The rabbit hole</h2>
+                <p class="section-subtitle">The one thread that went deeper than the rest.</p>
+            </div>
+
+            
+        <div class="rabbit-hole-card">
+            <div class="rabbit-label">Deepest conversation of 2026</div>
+            <h3 class="rabbit-title">"Ajustări design website"</h3>
+            <div class="rabbit-stats-grid">
+                <div class="rabbit-stat-box">
+                    <span class="stat-num">45</span>
+                    <span class="stat-sub">Total messages</span>
+                </div>
+                <div class="rabbit-stat-box">
+                    <span class="stat-num">14</span>
+                    <span class="stat-sub">Your prompts</span>
+                </div>
+                <div class="rabbit-stat-box">
+                    <span class="stat-num">31</span>
+                    <span class="stat-sub">GPT answers</span>
+                </div>
+                <div class="rabbit-stat-box">
+                    <span class="stat-num">3,483</span>
+                    <span class="stat-sub">Estimated words</span>
+                </div>
+            </div>
+            <div class="rabbit-date">Created on June 04, 2026</div>
+        </div>
+        
+        </section>
+
+        <section class="wrapped-section" id="slide-5">
+            <div class="section-header">
+                <h2 class="section-title">Hourly activity</h2>
+                <p class="section-subtitle">When during the day you asked for help.</p>
+            </div>
+
+            <div class="chart-card">
+                
+    <svg viewBox="0 0 760 220" class="wrapped-chart-svg" xmlns="http://www.w3.org/2000/svg">
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>00:00 to 00:59: 0 messages</title>
+            <rect x="54.0" y="180.0" width="20.7" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="64.4" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">00</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>01:00 to 01:59: 0 messages</title>
+            <rect x="82.8" y="180.0" width="20.7" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>02:00 to 02:59: 0 messages</title>
+            <rect x="111.5" y="180.0" width="20.7" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>03:00 to 03:59: 2 messages</title>
+            <rect x="140.3" y="177.0" width="20.7" height="3.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="150.6" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">03</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>04:00 to 04:59: 6 messages</title>
+            <rect x="169.0" y="174.2" width="20.7" height="5.8" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>05:00 to 05:59: 17 messages</title>
+            <rect x="197.8" y="163.6" width="20.7" height="16.4" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>06:00 to 06:59: 46 messages</title>
+            <rect x="226.5" y="135.7" width="20.7" height="44.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="236.9" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">06</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>07:00 to 07:59: 111 messages</title>
+            <rect x="255.3" y="73.1" width="20.7" height="106.9" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>08:00 to 08:59: 110 messages</title>
+            <rect x="284.0" y="74.1" width="20.7" height="105.9" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>09:00 to 09:59: 136 messages</title>
+            <rect x="312.8" y="49.1" width="20.7" height="130.9" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="323.1" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">09</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>10:00 to 10:59: 103 messages</title>
+            <rect x="341.5" y="80.8" width="20.7" height="99.2" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>11:00 to 11:59: 42 messages</title>
+            <rect x="370.3" y="139.6" width="20.7" height="40.4" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>12:00 to 12:59: 67 messages</title>
+            <rect x="399.0" y="115.5" width="20.7" height="64.5" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="409.4" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">12</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>13:00 to 13:59: 84 messages</title>
+            <rect x="427.8" y="99.1" width="20.7" height="80.9" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>14:00 to 14:59: 122 messages</title>
+            <rect x="456.5" y="62.5" width="20.7" height="117.5" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>15:00 to 15:59: 122 messages</title>
+            <rect x="485.3" y="62.5" width="20.7" height="117.5" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="495.6" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">15</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>16:00 to 16:59: 156 messages</title>
+            <rect x="514.0" y="29.8" width="20.7" height="150.2" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>17:00 to 17:59: 161 messages</title>
+            <rect x="542.8" y="25.0" width="20.7" height="155.0" rx="2"
+                  fill="#cfa65a" class="chart-bar" />
+            
+            <text x="553.1" y="19.0" fill="#cfa65a" font-size="10" font-weight="700" text-anchor="middle" font-family="system-ui">peak</text>
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>18:00 to 18:59: 152 messages</title>
+            <rect x="571.5" y="33.7" width="20.7" height="146.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="581.9" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">18</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>19:00 to 19:59: 98 messages</title>
+            <rect x="600.3" y="85.7" width="20.7" height="94.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>20:00 to 20:59: 62 messages</title>
+            <rect x="629.0" y="120.3" width="20.7" height="59.7" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>21:00 to 21:59: 20 messages</title>
+            <rect x="657.8" y="160.7" width="20.7" height="19.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            <text x="668.1" y="208" fill="rgba(255,255,255,0.5)" font-size="11" text-anchor="middle" font-family="system-ui">21</text>
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>22:00 to 22:59: 18 messages</title>
+            <rect x="686.5" y="162.7" width="20.7" height="17.3" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+        <g class="chart-bar-group" tabindex="0">
+            <title>23:00 to 23:59: 0 messages</title>
+            <rect x="715.3" y="180.0" width="20.7" height="0.0" rx="2"
+                  fill="#4f8fd0" class="chart-bar" />
+            
+            
+        </g>
+        
+    </svg>
+    
+                <div class="note-box">
+                    Peak hour: 17:00 to 17:59 with 161 messages.
+                </div>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-6">
+            <div class="section-header">
+                <h2 class="section-title">Subjects you kept coming back to</h2>
+                <p class="section-subtitle">Themes that kept reappearing in new conversations.</p>
+            </div>
+
+            <div class="chart-card">
+                <p class="sub-head">Recurring subjects across conversation titles</p>
+                <div class="revisited-grid">
+                    
+        <div class="revisited-tag">
+            <span class="tag-word">request</span>
+            <span class="tag-count">9 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">text</span>
+            <span class="tag-count">7 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">rezolvare</span>
+            <span class="tag-count">6 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">image</span>
+            <span class="tag-count">6 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">recommendations</span>
+            <span class="tag-count">6 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">minecraft</span>
+            <span class="tag-count">5 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">explicație</span>
+            <span class="tag-count">5 chats</span>
+        </div>
+        
+        <div class="revisited-tag">
+            <span class="tag-word">cod</span>
+            <span class="tag-count">5 chats</span>
+        </div>
+        
+                </div>
+
+                <p class="sub-head spaced">Frequent words (English and Romanian stopwords removed)</p>
+                <div class="word-cloud-container">
+                    
+        <span class="word-bubble"><strong>cout</strong> <small>(106)</small></span>
+        
+        <span class="word-bubble"><strong>int</strong> <small>(96)</small></span>
+        
+        <span class="word-bubble"><strong>fie</strong> <small>(94)</small></span>
+        
+        <span class="word-bubble"><strong>suma</strong> <small>(80)</small></span>
+        
+        <span class="word-bubble"><strong>când</strong> <small>(72)</small></span>
+        
+        <span class="word-bubble"><strong>return</strong> <small>(72)</small></span>
+        
+        <span class="word-bubble"><strong>sold</strong> <small>(69)</small></span>
+        
+        <span class="word-bubble"><strong>will</strong> <small>(68)</small></span>
+        
+        <span class="word-bubble"><strong>even</strong> <small>(61)</small></span>
+        
+        <span class="word-bubble"><strong>cont</strong> <small>(60)</small></span>
+        
+        <span class="word-bubble"><strong>despre</strong> <small>(59)</small></span>
+        
+        <span class="word-bubble"><strong>dont</strong> <small>(59)</small></span>
+        
+                </div>
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-7">
+            <div class="section-header">
+                <h2 class="section-title">Awards</h2>
+                <p class="section-subtitle">Titles taken straight from the numbers.</p>
+            </div>
+
+            <div class="awards-grid">
+                
+        <div class="award-card">
+            <div class="award-title">The Rabbit Hole Award</div>
+            <div class="award-metric">45 messages</div>
+            <div class="award-desc">Deepest dive into a single conversation thread.</div>
+            <div class="award-detail">Topic: &quot;Ajustări design website&quot;</div>
+        </div>
+        
+        <div class="award-card">
+            <div class="award-title">The Early Bird Award</div>
+            <div class="award-metric">284 morning messages</div>
+            <div class="award-desc">High productivity between 5:00 AM and 9:00 AM.</div>
+            <div class="award-detail">17.4% of all message activity</div>
+        </div>
+        
+        <div class="award-card">
+            <div class="award-title">The Regular</div>
+            <div class="award-metric">163 conversations</div>
+            <div class="award-desc">Your most dominant recurring subject area.</div>
+            <div class="award-detail">Category: Other (57.2% of total)</div>
+        </div>
+        
+        <div class="award-card">
+            <div class="award-title">The Busy Month</div>
+            <div class="award-metric">346 messages</div>
+            <div class="award-desc">The most intense ChatGPT month of the year.</div>
+            <div class="award-detail">Record set in April 2026</div>
+        </div>
+        
+        <div class="award-card">
+            <div class="award-title">The One-Question Wonder</div>
+            <div class="award-metric">112 quick chats</div>
+            <div class="award-desc">Quick, laser-focused chats with 2 or fewer messages.</div>
+            <div class="award-detail">39.3% of conversations were instant lookups</div>
+        </div>
+        
+        <div class="award-card">
+            <div class="award-title">The Streak Master</div>
+            <div class="award-metric">14 consecutive days</div>
+            <div class="award-desc">Longest uninterrupted consecutive daily usage streak.</div>
+            <div class="award-detail">Consistent daily problem solving</div>
+        </div>
+        
+            </div>
+        </section>
+
+        <section class="wrapped-section" id="slide-8">
+            <div class="section-header">
+                <h2 class="section-title">Year in a snapshot</h2>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-header">GPT Wrapped 2026</div>
+                <div class="summary-subtitle">Built locally from your ChatGPT export</div>
+
+                <div class="summary-stats-row">
+                    <div>
+                        <div class="summary-item-num">285</div>
+                        <div class="summary-item-lbl">Chats</div>
+                    </div>
+                    <div>
+                        <div class="summary-item-num">1,635</div>
+                        <div class="summary-item-lbl">Messages</div>
+                    </div>
+                    <div>
+                        <div class="summary-item-num">154</div>
+                        <div class="summary-item-lbl">Active days</div>
+                    </div>
+                </div>
+
+                <div class="summary-list">
+                    <p><strong>Top category:</strong> Other</p>
+                    <p><strong>Peak activity:</strong> 17:00</p>
+                    <p><strong>Longest streak:</strong> 14 days</p>
+                    <p><strong>Deepest dive:</strong> "Ajustări design website..." (45 msgs)</p>
+                </div>
+
+                <div class="summary-footer">
+                    Generated on this machine only. No data was sent anywhere.
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="page-footer">
+        <div class="footer-note">Local processing only</div>
+        <p>No external requests and no AI APIs were used to build this report.</p>
+        <p style="margin-top: 0.4rem;">ChatGPT is a trademark of OpenAI. This project is independent.</p>
+    </footer>
+
+    <script>
+
+let currentMode = 'scroll';
+let currentSlide = 0;
+const totalSlides = 9;
+
+function setViewMode(mode) {
+    currentMode = mode;
+    const btnScroll = document.getElementById('btnScrollMode');
+    const btnStory = document.getElementById('btnStoryMode');
+    const storyControls = document.getElementById('storyControls');
+
+    if (mode === 'story') {
+        btnScroll.classList.remove('active');
+        btnStory.classList.add('active');
+        storyControls.style.display = 'flex';
+        showSlide(currentSlide);
+    } else {
+        btnStory.classList.remove('active');
+        btnScroll.classList.add('active');
+        storyControls.style.display = 'none';
+        for (let i = 0; i < totalSlides; i++) {
+            const slide = document.getElementById('slide-' + i);
+            if (slide) slide.style.display = 'block';
+        }
+    }
+}
+
+function initStoryProgress() {
+    const container = document.getElementById('storyProgressBar');
+    if (!container) return;
+    container.innerHTML = '';
+    for (let i = 0; i < totalSlides; i++) {
+        const seg = document.createElement('div');
+        seg.className = 'story-progress-segment' + (i <= currentSlide ? ' passed' : '');
+        seg.id = 'progress-seg-' + i;
+        const fill = document.createElement('div');
+        fill.className = 'story-progress-fill';
+        seg.appendChild(fill);
+        container.appendChild(seg);
+    }
+}
+
+function showSlide(idx) {
+    if (idx < 0) idx = 0;
+    if (idx >= totalSlides) idx = totalSlides - 1;
+    currentSlide = idx;
+
+    for (let i = 0; i < totalSlides; i++) {
+        const slide = document.getElementById('slide-' + i);
+        if (slide) {
+            slide.style.display = (i === currentSlide) ? 'block' : 'none';
+        }
+        const seg = document.getElementById('progress-seg-' + i);
+        if (seg) {
+            if (i <= currentSlide) {
+                seg.classList.add('passed');
+            } else {
+                seg.classList.remove('passed');
+            }
+        }
+    }
+
+    const counter = document.getElementById('storySlideCounter');
+    if (counter) counter.innerText = (currentSlide + 1) + ' of ' + totalSlides;
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function nextStorySlide() {
+    if (currentSlide < totalSlides - 1) {
+        showSlide(currentSlide + 1);
+    }
+}
+
+function prevStorySlide() {
+    if (currentSlide > 0) {
+        showSlide(currentSlide - 1);
+    }
+}
+
+document.addEventListener('keydown', function(e) {
+    if (currentMode === 'story') {
+        if (e.key === 'ArrowRight' || e.key === ' ') {
+            nextStorySlide();
+        } else if (e.key === 'ArrowLeft') {
+            prevStorySlide();
+        }
+    }
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    initStoryProgress();
+});
+
+    </script>
+</body>
+</html>
