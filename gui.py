@@ -16,7 +16,6 @@ import webbrowser
 import customtkinter as ctk
 from tkinter import filedialog, messagebox
 
-# Reconfigure stdout/stderr to utf-8 on Windows consoles to prevent UnicodeEncodeError
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -28,7 +27,6 @@ from analyzer import analyze_export
 from parser import parse_export_zip
 from report import render_html_report
 
-# Configure CustomTkinter theme
 ctk.set_appearance_mode("Dark")
 ctk.set_default_color_theme("blue")
 
@@ -49,7 +47,6 @@ class GptWrappedApp(ctk.CTk):
         self._build_ui()
 
     def _build_ui(self):
-        # Header
         self.header_frame = ctk.CTkFrame(self, fg_color="transparent")
         self.header_frame.pack(fill="x", padx=20, pady=(20, 12))
 

@@ -9,7 +9,6 @@ from pathlib import Path
 import subprocess
 import sys
 
-# Reconfigure encoding
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")
@@ -19,7 +18,7 @@ if hasattr(sys.stdout, "reconfigure"):
 
 
 def build():
-    print("🔨 Starting build process for GPT Wrapped Standalone EXE...")
+    print("[BUILD] Starting build process for GPT Wrapped Standalone EXE...")
 
     root_dir = Path(__file__).parent.resolve()
     gui_script = root_dir / "gui.py"
@@ -44,14 +43,14 @@ def build():
         if exe_path.exists():
             size_mb = exe_path.stat().st_size / (1024 * 1024)
             print("\n" + "=" * 60)
-            print("  🎉 BUILD SUCCESSFUL!")
+            print("  BUILD SUCCESSFUL!")
             print("=" * 60)
             print(f"Executable created: {exe_path}")
             print(f"File Size:          {size_mb:.1f} MB")
             print("You can now double-click GPTWrapped.exe to run the application!\n")
             return True
 
-    print("❌ Build failed with return code:", res.returncode)
+    print("[ERROR] Build failed with return code:", res.returncode)
     return False
 
 

@@ -19,7 +19,6 @@ from collections import Counter
 import re
 from typing import Dict, List, Set, Tuple
 
-# Categories as specified in requirements
 CATEGORIES = [
     "Programming / Web Development",
     "School / Education",
@@ -34,7 +33,6 @@ CATEGORIES = [
     "Other"
 ]
 
-# Bilingual Topic Keywords (English and Romanian)
 CATEGORY_KEYWORDS: Dict[str, Set[str]] = {
     "Programming / Web Development": {
         # English
@@ -143,7 +141,6 @@ CATEGORY_KEYWORDS: Dict[str, Set[str]] = {
     }
 }
 
-# Stopwords: Comprehensive list for English and Romanian
 STOPWORDS_EN = {
     "a", "about", "above", "after", "again", "against", "all", "am", "an", "and", "any",
     "are", "aren't", "as", "at", "be", "because", "been", "before", "being", "below",

@@ -97,20 +97,17 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
     Perform complete statistical and topic analysis on conversations,
     filtering by selected_year if provided.
     """
-    # Filter by year if specified
     filtered: List[Conversation] = []
     for c in conversations:
         if c.create_time:
             if selected_year is None or c.create_time.year == selected_year:
                 filtered.append(c)
         else:
-            # If conversation has no timestamp, keep only if analyzing all-time
             if selected_year is None:
                 filtered.append(c)
 
     total_convs = len(filtered)
     if total_convs == 0:
-        # Return empty stats container
         return WrappedStats(
             year=selected_year,
             total_conversations=0,
@@ -301,7 +298,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="rabbit_hole",
             title="The Rabbit Hole Award",
-            badge_icon="🕳️",
+            badge_icon="hole",
             description="Deepest dive into a single conversation thread.",
             metric_value=f"{rabbit_hole.message_count} messages",
             extra_detail=f"Topic: \"{rabbit_hole.title}\""
@@ -314,7 +311,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="night_owl",
             title="The Night Owl Award",
-            badge_icon="🦉",
+            badge_icon="moon",
             description="Peak midnight oil burned between 12:00 AM and 5:00 AM.",
             metric_value=f"{night_msgs} late-night messages",
             extra_detail=f"{round((night_msgs / max(total_msgs, 1)) * 100, 1)}% of all message activity"
@@ -323,7 +320,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="early_bird",
             title="The Early Bird Award",
-            badge_icon="🌅",
+            badge_icon="sunrise",
             description="High productivity between 5:00 AM and 9:00 AM.",
             metric_value=f"{morning_msgs} morning messages",
             extra_detail=f"{round((morning_msgs / max(total_msgs, 1)) * 100, 1)}% of all message activity"
@@ -335,7 +332,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="the_regular",
             title="The Regular",
-            badge_icon="🎯",
+            badge_icon="target",
             description="Your most dominant recurring subject area.",
             metric_value=f"{fav_count} conversations",
             extra_detail=f"Category: {fav_cat} ({fav_pct}% of total)"
@@ -346,7 +343,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="busy_month",
             title="The Busy Month",
-            badge_icon="🔥",
+            badge_icon="bars",
             description="The most intense ChatGPT month of the year.",
             metric_value=f"{most_act_month_count} messages",
             extra_detail=f"Record set in {most_act_month}"
@@ -355,8 +352,8 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
     # 5. The One-Question Wonder
     awards.append(Award(
         id="quick_draw",
-        title="The One-Question Wonder",
-        badge_icon="⚡",
+            title="The One-Question Wonder",
+            badge_icon="zap",
         description="Quick, laser-focused chats with 2 or fewer messages.",
         metric_value=f"{one_q_count} quick chats",
         extra_detail=f"{one_q_pct}% of conversations were instant lookups"
@@ -367,7 +364,7 @@ def analyze_export(conversations: List[Conversation], selected_year: Optional[in
         awards.append(Award(
             id="streak_master",
             title="The Streak Master",
-            badge_icon="⚡",
+            badge_icon="trend",
             description="Longest uninterrupted consecutive daily usage streak.",
             metric_value=f"{longest_streak} consecutive days",
             extra_detail="Consistent daily problem solving"
