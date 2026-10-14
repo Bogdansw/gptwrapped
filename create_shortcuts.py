@@ -19,7 +19,6 @@ pythonw_path = Path(sys.executable).parent / "pythonw.exe"
 if not pythonw_path.exists():
     pythonw_path = Path(sys.executable)
 
-# 1. Create Launch GPT Wrapped.vbs (completely silent windowed launch)
 vbs_content = f'''Set WshShell = CreateObject("WScript.Shell")
 WshShell.CurrentDirectory = "{workspace_dir}"
 WshShell.Run """{pythonw_path}"" ""{gui_py}""", 0, False
@@ -30,7 +29,6 @@ with open(vbs_file, "w", encoding="utf-8") as f:
     f.write(vbs_content)
 print(f"Created VBS launcher: {vbs_file.name}")
 
-# 2. Create Launch GPT Wrapped.bat
 bat_content = f'''@echo off
 cd /d "{workspace_dir}"
 start "" "{pythonw_path}" "{gui_py}"
@@ -42,10 +40,8 @@ with open(bat_file, "w", encoding="utf-8") as f:
     f.write(bat_content)
 print(f"Created BAT launcher: {bat_file.name}")
 
-# 3. Create Windows Shortcut (.lnk) on Desktop
 desktop_dir = Path.home() / "Desktop"
 if not desktop_dir.exists():
-    # Check OneDrive Desktop
     one_drive_desktop = Path.home() / "OneDrive" / "Desktop"
     if one_drive_desktop.exists():
         desktop_dir = one_drive_desktop

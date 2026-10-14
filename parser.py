@@ -76,7 +76,6 @@ def parse_timestamp(val: Any) -> Optional[datetime]:
         return None
     try:
         if isinstance(val, (int, float)):
-            # ChatGPT timestamps are epoch seconds (can be float)
             return datetime.fromtimestamp(float(val), tz=timezone.utc)
         if isinstance(val, str):
             clean_str = val.replace("Z", "+00:00")
@@ -133,7 +132,6 @@ def parse_mapping_messages(mapping: Dict[str, Any], fallback_time: Optional[date
         author = msg_obj.get("author", {})
         role = author.get("role", "unknown") if isinstance(author, dict) else "unknown"
 
-        # Ignore system / internal routing messages unless useful
         if role in ("system", "tool", "critic"):
             continue
 
@@ -168,11 +166,9 @@ def parse_single_conversation(raw_conv: Dict[str, Any]) -> Optional[Conversation
 
     messages: List[Message] = []
 
-    # 1. Primary format: mapping DAG
     if "mapping" in raw_conv and isinstance(raw_conv["mapping"], dict):
         messages = parse_mapping_messages(raw_conv["mapping"], create_time)
 
-    # 2. Legacy / alternative format: flat messages list
     elif "messages" in raw_conv and isinstance(raw_conv["messages"], list):
         for idx, m in enumerate(raw_conv["messages"]):
             if not isinstance(m, dict):
@@ -185,7 +181,6 @@ def parse_single_conversation(raw_conv: Dict[str, Any]) -> Optional[Conversation
             m_id = str(m.get("id") or f"msg_{idx}")
             messages.append(Message(id=m_id, role=role, text=text, timestamp=m_time))
 
-    # If conversation has no timestamp, infer from earliest message
     if create_time is None:
         msg_times = [m.timestamp for m in messages if m.timestamp is not None]
         if msg_times:
@@ -220,18 +215,15 @@ def parse_export_data(source_path: str) -> ParsedExport:
 
     raw_conversations: List[Dict[str, Any]] = []
 
-    # Case A: ZIP archive
     if path.is_file() and zipfile.is_zipfile(path):
         with zipfile.ZipFile(path, "r") as z:
             conv_entries = [e for e in z.namelist() if is_conversation_filename(e)]
             if not conv_entries:
-                # Fallback: check any json containing 'conversation'
                 conv_entries = [e for e in z.namelist() if "conversation" in e.lower() and e.endswith(".json") and "asset" not in e.lower()]
 
             if not conv_entries:
                 raise KeyError(f"Could not find any 'conversations.json' or 'conversations-*.json' inside {path.name}.")
 
-            # Sort entries (e.g. conversations-000.json, conversations-001.json...)
             conv_entries.sort()
             logger.info(f"Found {len(conv_entries)} conversation files in ZIP: {conv_entries}")
 
@@ -248,7 +240,6 @@ def parse_export_data(source_path: str) -> ParsedExport:
                     except Exception as e:
                         logger.warning(f"Error reading JSON from {entry}: {e}")
 
-    # Case B: Directory / Unzipped folder
     elif path.is_dir():
         json_files = [f for f in path.rglob("*.json") if is_conversation_filename(f.name)]
         if not json_files:
@@ -305,5 +296,4 @@ def parse_export_data(source_path: str) -> ParsedExport:
     )
 
 
-# Alias for backward compatibility
 parse_export_zip = parse_export_data

@@ -24,7 +24,6 @@ import sys
 import unittest
 import zipfile
 
-# Reconfigure stdout/stderr to utf-8 on Windows consoles to prevent UnicodeEncodeError
 if hasattr(sys.stdout, "reconfigure"):
     try:
         sys.stdout.reconfigure(encoding="utf-8", errors="replace")

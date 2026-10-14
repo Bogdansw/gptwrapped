@@ -13,6 +13,7 @@ from pathlib import Path
 from typing import Dict, List, Optional, Tuple
 
 from analyzer import Award, ConversationHighlight, WrappedStats
+from icons import get_icon_svg
 
 MONTH_NAMES = [
     "Jan", "Feb", "Mar", "Apr", "May", "Jun",
@@ -582,6 +583,24 @@ body {
     padding: 1.4rem;
 }
 
+.award-icon {
+    width: 36px;
+    height: 36px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--bg-surface-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    color: var(--amber);
+    margin-bottom: 0.8rem;
+}
+
+.award-icon svg {
+    width: 22px;
+    height: 22px;
+}
+
 .award-title {
     font-size: 1.05rem;
     font-weight: 700;
@@ -830,6 +849,7 @@ def render_html_report(
     for award in stats.awards:
         award_cards.append(f"""
         <div class="award-card">
+            <div class="award-icon">{get_icon_svg(award.badge_icon)}</div>
             <div class="award-title">{escape(award.title)}</div>
             <div class="award-metric">{escape(award.metric_value)}</div>
             <div class="award-desc">{escape(award.description)}</div>
